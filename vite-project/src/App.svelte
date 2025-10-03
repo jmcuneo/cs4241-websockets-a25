@@ -23,9 +23,8 @@
     ctx.lineCap = 'round';
     ctx.lineWidth = 5;
 
-    ws = new WebSocket(`${location.origin.replace(/^http/, 'ws')}`)
     //Local testing socket
-    // ws = new WebSocket('ws://127.0.0.1:3000');
+    ws = new WebSocket('ws://127.0.0.1:3000');
 
     ws.onopen = () => {
       console.log('Connected to WebSocket server.');
