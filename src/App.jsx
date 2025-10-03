@@ -46,15 +46,15 @@ function App() {
             return color;
         }
 
-        const color = getRandomColor()
+
         window.onclick = e => {
             const data = {
                 x: e.pageX,
                 y: e.pageY,
-                color: color
+                color: "rgba(" + options.Color.r + "," + options.Color.g + "," + options.Color.b + "," + "1)"
             }
             ws.send(JSON.stringify(data))
-            ctx.fillStyle = "rgba(" + options.Color.r + "," + options.Color.g + "," + options.Color.b + "," + "1)" 
+            ctx.fillStyle = "rgba(" + options.Color.r + "," + options.Color.g + "," + options.Color.b + "," + "1)"
             ctx.fillRect(e.pageX, e.pageY, 50, 50)
         }
     })
