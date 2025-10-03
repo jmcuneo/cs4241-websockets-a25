@@ -145,6 +145,13 @@
         // Send to all other clients
         ws.send(`PROMPT:${selectedObject}`)
       })
+
+      //clean button 
+      document.getElementById('clearButton').addEventListener('click', () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        // Optionally, you can also send a clear command to other clients
+        ws.send('CLEAR')
+      })
     }
   </script>
 </head>
@@ -155,6 +162,8 @@
   <div id="controls">
     <button id="randomButton">Pick Random Object</button>
     <div id="prompt">Click the button to get a drawing prompt!</div>
+
+    <button id="clearButton">Clear Canvas</button>
   </div>
   <canvas></canvas>
 </body>
