@@ -65,7 +65,9 @@
 <h3>You can only send messages that include the following phrases: Homework, School, Class, and Work.</h3>
 <h3>Any other message will result in server shutdown.</h3>
 
-<input type='text' on:change={send} />
+<input type='text' id = 'box' on:change={send} />
+<br>
+<input type='submit' id = 'submit' value='Send'/>
 
 {#each msgs as msg }
   <h3>{msg}</h3>
