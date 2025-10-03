@@ -30,7 +30,7 @@
     function send() {
         if (!txt) return
         ws.send(username + ': ' + txt)
-        msgs = msgs.concat(['me: ' + txt])
+        msgs = msgs.concat([username + ': ' + txt])
         txt = ''
 
         console.log(msgs)
