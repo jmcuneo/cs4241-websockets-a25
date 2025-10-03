@@ -1,24 +1,7 @@
 # ICE 05: Websockets
-
-In this activity, you will work in groups to build a simple websockets application
-
-### Instructions
-
-1. Divide yourselves into groups of 3 - 5 students. **Make sure to register all your group members on Canvas so that you get credit.**
-
-2. Implement the basic websockets setup demo from the [sockets guide](https://github.com/jmcuneo/cs4241-guides/blob/master/using.sockets.md). Make sure that is up and running correctly before proceeding to the next step.
-
-3. Using the demo as a starting point, create a simple networked web application. Make sure the application can handle everybody in your group. Be creative, but manage your time and expectations wisely so that you have a complete application to submit by the end of class.
-
-4. Write up a README file that includes the names of all of your group members and a description of what the application does. Be sure to list anything a user might need to know before using your application. Also describe any challenges your group faced.
-
-5. Submit your final assignment by initiating a pull request against this repo.
-
-**NOTE:** The demo uses Svelte, but you are welcome to switch to a different UI framework if you prefer.
-
-
 ## Collaborative Canvas with Fading Trails (Svelte + WebSockets)
 
+Group 12: Ken Sebastian, Shawn Patel, Batyrkhan Saparuly, Rohit Tallapragada <br>
 
 A tiny real-time “multiplayer” drawing canvas. Each user is assigned a random color; strokes are broadcast over a WebSocket and rendered with a 2-second fade-out trail so the canvas stays clean while still showing recent activity.
 
@@ -29,7 +12,7 @@ A tiny real-time “multiplayer” drawing canvas. Each user is assigned a rando
 -**Draw on an HTML "<canvas>" and see others’ strokes live**
 
 
--**Each user gets a random color from a small palette**
+-**Each user gets a random color from a small palette (5 colors)**
 
 
 -**Trails fade out smoothly over ~2 seconds (configurable)**
@@ -43,7 +26,7 @@ A tiny real-time “multiplayer” drawing canvas. Each user is assigned a rando
 
 ### Instructions
 
--**A WebSocket connects to ws://127.0.0.1:3100.**
+-**A WebSocket connects to ws://127.0.0.1:3000.**
 
 -**When you drag on the canvas, each small segment is**:
 
@@ -67,3 +50,11 @@ Message format
   "x2": 40, "y2": 60,
   "color": "#color"
 }
+
+## To Run
+- cd vite-project
+- 'npm run dev' on one terminal
+- 'npm start' or 'node server.js' on another terminal
+- Open localhost link from npm run dev
+- Duplicate page
+- Draw (hold and drag mouse) and see the live strokes across the pages.
