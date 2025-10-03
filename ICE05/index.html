@@ -11,7 +11,7 @@
 
     #controls {
       position: fixed;
-      top: 10px;
+      bottom: 20px;
       right: 10px;
       z-index: 100;
     }
@@ -49,8 +49,9 @@
       margin: 0;
     }
   </style>
-  <script>
-    let ws, msgs = [], ctx = null
+  <script type="module">
+    import {Pane} from 'https://cdn.jsdelivr.net/npm/tweakpane@4.0.5/dist/tweakpane.min.js';
+    let ws, ctx = null
     let isDrawing = false
     let lastX = 0
     let lastY = 0
@@ -109,6 +110,9 @@
       canvas.height = window.innerHeight
       ctx = canvas.getContext('2d')
 
+      let sstroke = 5;
+      let scolor = "#ff0055";
+
       canvas.addEventListener("mousedown", (e) => {
         isDrawing = true
           ;[lastX, lastY] = [e.offsetX, e.offsetY]
@@ -121,8 +125,8 @@
         ctx.beginPath()
         ctx.moveTo(lastX, lastY)
         ctx.lineTo(e.offsetX, e.offsetY)
-        ctx.strokeStyle = "orange"
-        ctx.lineWidth = 5
+        ctx.strokeStyle = scolor;
+        ctx.lineWidth = sstroke;
         ctx.stroke()
 
         // Send drawing data to server
@@ -146,12 +150,34 @@
         ws.send(`PROMPT:${selectedObject}`)
       })
 
-      //clean button 
+      //clean button
       document.getElementById('clearButton').addEventListener('click', () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         // Optionally, you can also send a clear command to other clients
         ws.send('CLEAR')
       })
+        const pane = new Pane({
+            title: "Settings",
+            expanded: true,
+        });
+        const PARAMS = {
+            size: 5,
+            color: '#ff0055',
+        };
+
+        const size = pane.addBinding(
+            PARAMS, 'size',
+            {min: 1, max: 100, step: 1}
+        );
+        const color = pane.addBinding(
+            PARAMS, 'color'
+        );
+        size.on('change', function(ev) {
+            sstroke = ev.value;
+        });
+        color.on('change', function(ev) {
+            scolor = ev.value;
+        });
     }
   </script>
 </head>
