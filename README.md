@@ -13,3 +13,5 @@ Write up a README file that includes the names of all of your group members and 
 Submit your final assignment by initiating a pull request against this repo. You are welcome to deploy this project on a hosting service, but focus on getting something that works on your local machines.
 
 NOTE: The demo uses Svelte, but you are welcome to switch to a different UI framework if you prefer.
+
+link: https://group7-ice05.onrender.com/
