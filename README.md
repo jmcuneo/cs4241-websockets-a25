@@ -1,10 +1,10 @@
 # ICE 05: Websockets
+## Group 1
+### Nia Junod, Arianna Xie, Charles Sibal, Michael Lin, Grace Mahoney
 
 In this activity, you will work in groups to build a simple websockets application
 
 ### Instructions
-
-1. Divide yourselves into groups of 3 - 5 students. **Make sure to register all your group members on Canvas so that you get credit.**
 
 2. Implement the basic websockets setup demo from the [sockets guide](https://github.com/jmcuneo/cs4241-guides/blob/master/using.sockets.md). Make sure that is up and running correctly before proceeding to the next step.
 
