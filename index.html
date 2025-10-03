@@ -1,11 +1,88 @@
 <html lang="en">
+
 <head>
     <style>
-        body { margin:0; background:black }
+        body {
+            margin: 0;
+            background: black
+        }
     </style>
 </head>
+
 <body>
-    <script type="module" src="src/script.js"></script>
+    <script type="module">
+        import { Pane } from 'tweakpane';
+
+        const pane = new Pane();
+
+        const PARAMS = {
+            shape: 'square'
+        };
+
+        // @ts-ignore
+        pane.addBinding(
+            PARAMS, 'shape',
+            { options: { square: 'square', circle: 'circle', triangle: 'triangle' } }
+        );
+
+        let ws, msgs = [], ctx = null
+
+        window.onload = function () {
+            ws = new WebSocket('ws://127.0.0.1:3000')
+
+            ws.onopen = () => {
+                ws.onmessage = async msg => {
+                    const pos = await msg.data.text()
+                    const [x, y] = pos.split(':').map(v => parseInt(v))
+
+                    ctx.fillStyle = 'red'
+                    if (PARAMS.shape == 'square') {
+                        ctx.fillRect(x, y, 50, 50)
+                    }
+                    else if (PARAMS.shape == 'circle') {
+                        ctx.beginPath();
+                        ctx.arc(x, y, 25, 0, 2 * Math.PI);
+                        ctx.fill();
+                    }
+                    else if (PARAMS.shape == 'triangle') {
+                        ctx.beginPath(); // Start a new path
+                        ctx.moveTo(x, y + 20);
+                        ctx.lineTo(x + 20, y - 20);
+                        ctx.lineTo(x - 20, y - 20);
+                        ctx.fill();
+                        ctx.closePath();
+                    }
+                }
+            }
+
+            const canvas = document.querySelector('canvas')
+            canvas.width = window.innerWidth
+            canvas.height = window.innerHeight
+            ctx = canvas.getContext('2d')
+
+            window.onclick = e => {
+                ws.send(`${e.pageX}:${e.pageY}`)
+                ctx.fillStyle = 'yellow'
+                if (PARAMS.shape == 'square') {
+                    ctx.fillRect(e.pageX, e.pageY, 50, 50)
+                }
+                else if (PARAMS.shape == 'circle') {
+                    ctx.beginPath();
+                    ctx.arc(e.pageX, e.pageY, 25, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+                else if (PARAMS.shape == 'triangle') {
+                    ctx.beginPath(); // Start a new path
+                    ctx.moveTo(e.pageX, e.pageY + 20);
+                    ctx.lineTo(e.pageX + 20, e.pageY - 20);
+                    ctx.lineTo(e.pageX - 20, e.pageY - 20);
+                    ctx.fill();
+                    ctx.closePath();
+                }
+            }
+        }
+    </script>
     <canvas></canvas>
 </body>
+
 </html>
