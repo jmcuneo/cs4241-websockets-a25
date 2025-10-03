@@ -1,17 +1,23 @@
-# ICE 05: Websockets
+# ICE 05 - Group 16
 
-In this activity, you will work in groups to build a simple websockets application
+Group Members: Peter Czepiel (worked individually)
+
+---
 
 ### Instructions
 
-1. Divide yourselves into groups of 3 - 5 students. **Make sure to register all your group members on Canvas so that you get credit.**
+1. npm install
+2. (In one terminal instance) node server.js
+3. (In a different terminal instance) npm run dev
 
-2. Implement the basic websockets setup demo from the [sockets guide](https://github.com/jmcuneo/cs4241-guides/blob/master/using.sockets.md). Make sure that is up and running correctly before proceeding to the next step.
+---
 
-3. Using the demo as a starting point, create a simple networked web application. Make sure the application can handle everybody in your group. Be creative, but manage your time and expectations wisely so that you have a complete application to submit by the end of class.
+### Description
 
-4. Write up a README file that includes the names of all of your group members and a description of what the application does. Be sure to list anything a user might need to know before using your application. Also describe any challenges your group faced.
+My application is a Clicking Game where each player that connects will be greeted with a red button that read "Click Me". Upon clicking the button, a new button will appear in a random spot on the screen and 1 point will be added to that player's score. Each new player that connects will have their own name on the leaderboard (player1, then player2, etc.) and their name will be removed upon disconnecting.
 
-5. Submit your final assignment by initiating a pull request against this repo. You are welcome to deploy this project on a hosting service, but focus on getting something that works on your local machines.
+---
 
-**NOTE:** The demo uses Svelte, but you are welcome to switch to a different UI framework if you prefer.
+### Challenges Faced
+
+Using the demo link provided made the exercise very easy. The only problem I faced was coming up with a good idea for an application, but once I settled on a Clicking Game, there was no other challenges.
