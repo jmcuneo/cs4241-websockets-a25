@@ -3,39 +3,97 @@
     <style>
         body {
             margin:0;
-            background:black
+            background:white
         }
     </style>
     <script>
-        let ws, msgs = [], ctx = null
+        let ws = [], ctx = null
+        let name = "";
+
+        const handleSubmit = (e)=>{
+            e.preventDefault();
+            const input = document.getElementById("username");
+            if(input){
+                if(input.value === ""){
+                    const error = document.getElementById("error");
+                    error.innerText = "Cannot have blank name";
+                    setTimeout(()=>{error.innerText = ""}, 1000);
+                }
+                else if(input.value === "server"){
+                    const error = document.getElementById("error");
+                    error.innerText = "Cannot use this name";
+                    setTimeout(()=>{error.innerText = ""}, 1000);
+                }
+                else{
+                    name = input.value;
+                    document.getElementById("form-container").remove();
+                    document.getElementById("messages-container").setAttribute("style","justify-content: center; align-items: center; text-align: center;align-self:center;");
+                    ws = new WebSocket( 'ws://127.0.0.1:3000' )
+
+                    ws.onopen = () => {
+                        ws.onmessage = async msg => {
+                            const messages = document.getElementById("messages");
+                            if(messages) {
+                                const pos = await msg.data.text();
+                                const [user, message] = pos.split(':');
+                                const toAdd = document.createElement("p");
+                                toAdd.innerText = `${user}:${message}`;
+                                toAdd.setAttribute("style", "color:lightblue;");
+                                messages.appendChild(toAdd);
+
+                            }
+
+                        }
+                    }
+                }
+
+            }
+        }
+
+        const handleNewMessage = (e) => {
+            e.preventDefault();
+            const input = document.getElementById("message");
+            if(input){
+                const message = input.value;
+                const messages = document.getElementById("messages");
+                if(messages) {
+                    const toAdd = document.createElement("p");
+                    toAdd.innerText = `self:${message}`;
+                    toAdd.setAttribute("style", "color:blue;");
+                    messages.appendChild(toAdd);
+                    input.value = "";
+                }
+                ws.send(`${name}:${message}`)
+
+            }
+        }
 
         window.onload = function() {
-            ws = new WebSocket( 'ws://127.0.0.1:3000' )
 
-            ws.onopen = () => {
-                ws.onmessage = async msg => {
-                    const pos = await msg.data.text()
-                    const [x,y] = pos.split( ':' ).map( v => parseInt(v) )
+            document.getElementById('username-form').addEventListener('submit', handleSubmit);
+            document.getElementById('message-form').addEventListener('submit', handleNewMessage);
 
-                    ctx.fillStyle = 'red'
-                    ctx.fillRect( x,y,50,50 )
-                }
-            }
-
-            const canvas = document.querySelector('canvas')
-            canvas.width = window.innerWidth
-            canvas.height = window.innerHeight
-            ctx = canvas.getContext( '2d' )
-
-            window.onclick = e => {
-                ws.send( `${e.pageX}:${e.pageY}` )
-                ctx.fillStyle = 'yellow'
-                ctx.fillRect( e.pageX,e.pageY,50,50 )
-            }
         }
     </script>
 </head>
 <body>
-<canvas></canvas>
+    <div id="form-container" style="justify-content: center; align-items: center; text-align: center;align-self:center;">
+        <h1>Enter name to continue</h1>
+        <form id="username-form">
+            <label for = "username">Name:</label>
+            <input type="text" placeholder="enter name" id = "username"/>
+            <button type = "submit" id = "submit">submit</button>
+        </form>
+        <p id="error" style="color:red"></p>
+    </div>
+    <div id = "messages-container" style="display:none">
+        <h1>Chat</h1>
+        <div id="messages"></div>
+        <form id="message-form">
+            <label for = "message">Message:</label>
+            <input type="text" placeholder="..." id = "message"/>
+        </form>
+    </div>
+
 </body>
 </html>

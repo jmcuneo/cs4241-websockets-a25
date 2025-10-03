@@ -10,8 +10,7 @@ const server = http.createServer( app ),
     clients = []
 
 socketServer.on( 'connection', client => {
-    console.log( 'connect!' )
-
+    console.log( 'connect!',client )
     // when the server receives a message from this client...
     client.on( 'message', msg => {
         // send msg to every client EXCEPT the one who originally sent it
