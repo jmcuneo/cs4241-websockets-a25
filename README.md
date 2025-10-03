@@ -12,6 +12,6 @@ In this activity, you will work in groups to build a simple websockets applicati
 
 4. Write up a README file that includes the names of all of your group members and a description of what the application does. Be sure to list anything a user might need to know before using your application. Also describe any challenges your group faced.
 
-5. Submit your final assignment by initiating a pull request against this repo.
+5. Submit your final assignment by initiating a pull request against this repo. You are welcome to deploy this project on a hosting service, but focus on getting something that works on your local machines.
 
 **NOTE:** The demo uses Svelte, but you are welcome to switch to a different UI framework if you prefer.
