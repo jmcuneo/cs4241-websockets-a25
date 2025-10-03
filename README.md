@@ -2,8 +2,6 @@
 
 Group Members: Peter Czepiel (worked individually)
 
-Deploy Link: LINK HERE
-
 ---
 
 ### Instructions
