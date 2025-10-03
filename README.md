@@ -1,4 +1,5 @@
 # ICE 05: Websockets
+## Group 1
 
 In this activity, you will work in groups to build a simple websockets application
 
