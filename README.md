@@ -10,6 +10,7 @@ This application does the following:
 - Rules of the Game: 
   - We have a button that when clicked picks a random object to draw, which has random premade objects to draw (e.g. a cat sitting on a windowsill). There is also a button to remove the canvas drawing.
   - The user would draw the image that is shown. An example is shown below: 
-  - <img width="1783" height="882" alt="IMG_9422" src="https://github.com/user-attachments/assets/fd8d0c03-5623-45ff-826f-d75331728010" />
+  - <img width="1509" height="748" alt="image" src="https://github.com/user-attachments/assets/33e51549-9456-40ff-a8ce-cc56c4e543df" />
+
 
 
