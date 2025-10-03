@@ -1,31 +1,40 @@
 <script>
-  let msgs = []
+  let myId = null;
+  let a = null, b = null;
+  let winner = null;
       
   const scheme = location.protocol === 'https:' ? 'wss' : 'ws'
   const ws = new WebSocket(`${scheme}://${location.host}/ws`)
-
-
-  // when connection is established...
-  ws.onopen = () => {
-    ws.send( 'a new client has connected.' )
-
-    ws.onmessage = async msg => {
-      // add message to end of msgs array,
-      // re-assign to trigger UI update
-      const message = await msg.data.text()
-      msgs = msgs.concat([ 'them: ' + message ])
-    }
-  }
-
-  const send = function() {
-    const txt = document.querySelector('input').value
-    ws.send( txt )
-    msgs = msgs.concat([ 'me: ' + txt ])
-  }
+  ws.addEventListener('message', (e) => {
+    try {
+      const m = JSON.parse(e.data);
+      if (m.type === 'hello') myId = m.id;
+      if (m.type === 'roll') {
+        a = m.a; b = m.b;
+        if (m.win) winner = m.id;
+      }
+      if (m.type === 'reset') {
+        a = b = null;
+        winner = null;
+      }
+    } catch {}
+  });
+  function roll()  { ws.send(JSON.stringify({ type: 'roll' })); }
+  function reset() { ws.send(JSON.stringify({ type: 'reset' })); }
 </script>
 
-<input type='text' on:change={send} />
+<div class="wrap">
+  <h2>First to roll double dice!</h2>
+  <p>You are Player {myId ?? '…'}</p>
 
-{#each msgs as msg }
-  <h3>{msg}</h3>
-{/each}
+  <div>
+    <button on:click={roll} disabled={!!winner}>Roll dice</button>
+    <button on:click={reset}>Reset</button>
+  </div>
+
+  <p>Last roll: {a ?? '-'} & {b ?? '-'}</p>
+
+  {#if winner}
+    <h3>Player {winner} won!</h3>
+  {/if}
+</div>
