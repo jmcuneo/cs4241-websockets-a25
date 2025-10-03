@@ -41,32 +41,40 @@
 import express from 'express'
 import http from 'http'
 import path from 'path'
+import { fileURLToPath } from 'url'
 import { WebSocketServer } from 'ws'
+
+// --- ES module __dirname fix ---
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const app = express()
 const server = http.createServer(app)
 const wss = new WebSocketServer({ server })
 const clients = []
 
-// Serve the Svelte build output
-app.use(express.static(path.join(__dirname, 'vite-project', 'dist')))
+// --- Serve Svelte build output ---
+app.use(express.static(path.join(__dirname, 'dist')))
 
-// For SPA routing, redirect all other requests to index.html
+// SPA routing: redirect all other requests to index.html
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'vite-project', 'dist', 'index.html'))
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'))
 })
 
-// WebSocket connections
+// --- WebSocket connections ---
 wss.on('connection', ws => {
     console.log('client connected')
+
     ws.on('message', msg => {
+        // broadcast to all other clients
         clients.forEach(c => {
             if (c !== ws && c.readyState === ws.OPEN) c.send(msg)
         })
     })
+
     clients.push(ws)
 })
 
-// Render port
+// --- Listen on Render port ---
 const PORT = process.env.PORT || 3000
 server.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
