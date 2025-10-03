@@ -1,5 +1,5 @@
 <script lang="ts">
-  let msgs: string[] 
+  let msgs: string[] = []
       
   const ws = new WebSocket( 'ws://127.0.0.1:3000' )
 
@@ -22,8 +22,9 @@
     }
     else{
       //const txt: string|null = document.querySelector('input').value
-      const temp = document.querySelector('input')!
+      const temp: HTMLInputElement|null = document.querySelector('input')!
       const txt: string = temp.value;
+      console.log()
 
       ws.send( txt )
       msgs = msgs.concat([ 'me: ' + txt ])
