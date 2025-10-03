@@ -1,8 +1,10 @@
-GROUP 15 - ICE 5
+# GROUP 15 - ICE 5
 
 Conor McCoy
 Ashley Fontaine
 Remy Jiang
+
+## Territory Takeover
 
 Description
 
