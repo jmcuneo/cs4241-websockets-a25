@@ -1,32 +1,42 @@
 <script>
     import {onMount} from "svelte";
 
-    let ws, msgs = [], ctx = null
+    let isDrawing = $state(false);
+    let ws, ctx;
 
     onMount(() => {
-        ws = new WebSocket( 'ws://127.0.0.1:3000' )
+        ws = new WebSocket('ws://127.0.0.1:3000');
+
+        const canvas = document.querySelector('canvas');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        ctx = canvas.getContext('2d');
 
         ws.onopen = () => {
             ws.onmessage = async msg => {
-                const pos = await msg.data.text()
-                const [x,y] = pos.split( ':' ).map( v => parseInt(v) )
+                const pos = await msg.data.text();
+                const [x, y] = pos.split(':').map(v => parseInt(v));
 
-                ctx.fillStyle = 'red'
-                ctx.fillRect( x,y,50,50 )
+                ctx.fillStyle = 'red';
+
+                ctx.beginPath();
+                ctx.arc(x, y, 8, 0, Math.PI * 2, false);
+                ctx.fill();
             }
         }
-
-        const canvas = document.querySelector('canvas')
-        canvas.width = window.innerWidth
-        canvas.height = window.innerHeight
-        ctx = canvas.getContext( '2d' )
-
-        window.onclick = e => {
-            ws.send( `${e.pageX}:${e.pageY}` )
-            ctx.fillStyle = 'yellow'
-            ctx.fillRect( e.pageX,e.pageY,50,50 )
-        }
     });
+
+    function draw(e) {
+        if (!isDrawing) return;
+
+        ws.send(`${e.pageX}:${e.pageY}`);
+        ctx.fillStyle = 'yellow';
+
+        ctx.beginPath();
+        ctx.arc(e.pageX, e.pageY, 8, 0, Math.PI * 2, false);
+        ctx.fill();
+    }
 </script>
 
-<canvas></canvas>
+<canvas onmouseup={() => isDrawing = false} onmousedown={() => isDrawing = true} onmousemove={draw}></canvas>
