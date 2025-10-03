@@ -1,0 +1,88 @@
+<html lang="en">
+  <head>
+    <style>
+      body { 
+        margin:0; 
+        background:black 
+      } 
+      * {
+        color: white
+      }
+      body {
+        align-content: center;
+        margin-left: 600px;
+      }
+    </style>
+    <script>
+      let ws = []
+      let count = 0;
+      let oppcount = 0
+      let timer = 10
+      let theyreready = false
+      let youreready = false
+      let going = false
+      
+      window.onload = function() {
+        ws = new WebSocket( 'ws://127.0.0.1:3000' )
+
+        ws.onopen = () => {
+          ws.onmessage = async msg => {
+            const pos = await msg.data.text()
+            if(pos === "ready"){
+              theyreready = true
+              both()
+            }
+            else{oppcount = parseInt(pos)
+            const oppScore = document.getElementById("oppScore")
+            oppScore.textContent = "Opponent Click Count: " + oppcount
+            }
+          }
+        }
+
+        function delay(ms) {
+          return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        const ready = async function(){
+          youreready = true
+          ws.send( "ready" )
+          both()
+        }
+
+        const both = async function(){
+          if (youreready & theyreready){
+            const countdown = document.getElementById( "countdown" )
+            countdown.textContent = "Get Ready..."
+            await delay(3000);
+            countdown.textContent = "GO!!!"
+            going = true
+            await delay(timer * 1000);
+            countdown.textContent = "Stop!"
+            going = false
+            ws.send( count )
+            const myScore = document.getElementById("myScore")
+            myScore.textContent = "Your Click Count: " + count
+          }
+        }
+
+        window.onclick = e => { 
+          if (going){
+            count++
+            
+          }
+        }
+
+        const readybutton = document.getElementById("ready?")
+        readybutton.onclick = ready
+      }
+    </script>
+  </head>
+  <body>
+    <div>
+      <h1 id="myScore">Your Click Count: ???</h1>
+      <h1 id="oppScore">Opponent Click Count: ???</h1>
+      <button id="ready?">Ready?</button>
+      <h1 id="countdown"></h1>
+    </div>
+  </body>
+</html>

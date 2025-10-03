@@ -1,17 +1,11 @@
-# ICE 05: Websockets
+Write up a README file that includes the names of all of your group members and a description of what the application does. Be sure to list anything a user might need to know before using your application. Also describe any challenges your group faced.
 
-In this activity, you will work in groups to build a simple websockets application
+Names: Grace Robinson and Lucas Marble
 
-### Instructions
+Description: This application is a small click game that allows two players to go head to head against eachother. In this game, there are click counts for both users that appear on the screen. These counts are initially set to 0 but once both players are ready, the players must click the screen as many times as they can before the time runs out. To start the game, both players must click the ready button and once the go message is displayed on the screen, start clicking. Once the time runs out, a message is displayed for the user to stop and any clicks after that point will not be counted. The click count for yourself and your opponenet will be displayed on the screen. We were able to add a fun component that keeps the number of clicks for both players a secret until the game is over! The biggest challenege we faced was trying to figure out how to set it up, but once we figured that out, all went well!
 
-1. Divide yourselves into groups of 3 - 5 students. **Make sure to register all your group members on Canvas so that you get credit.**
+Images of the application:
 
-2. Implement the basic websockets setup demo from the [sockets guide](https://github.com/jmcuneo/cs4241-guides/blob/master/using.sockets.md). Make sure that is up and running correctly before proceeding to the next step.
+<img src="images/start.png"/>
 
-3. Using the demo as a starting point, create a simple networked web application. Make sure the application can handle everybody in your group. Be creative, but manage your time and expectations wisely so that you have a complete application to submit by the end of class.
-
-4. Write up a README file that includes the names of all of your group members and a description of what the application does. Be sure to list anything a user might need to know before using your application. Also describe any challenges your group faced.
-
-5. Submit your final assignment by initiating a pull request against this repo. You are welcome to deploy this project on a hosting service, but focus on getting something that works on your local machines.
-
-**NOTE:** The demo uses Svelte, but you are welcome to switch to a different UI framework if you prefer.
+<img src="images/stop.png"/>
