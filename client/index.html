@@ -27,10 +27,11 @@
                 else{
                     name = input.value;
                     document.getElementById("form-container").remove();
-                    document.getElementById("messages-container").setAttribute("style","justify-content: center; align-items: center; text-align: center;align-self:center;");
+                    document.getElementById("messages-container").setAttribute("style","justify-content: center; align-items: center; text-align: center;align-self:center;border:1px solid black;background-color:lightgray;width:50%;margin-top:2em;margin-left:auto;margin-right:auto;");
                     ws = new WebSocket( 'ws://127.0.0.1:3000' )
 
                     ws.onopen = () => {
+                        ws.send(`server: ${name} has joined`)
                         ws.onmessage = async msg => {
                             const messages = document.getElementById("messages");
                             if(messages) {
@@ -39,6 +40,8 @@
                                 const toAdd = document.createElement("p");
                                 toAdd.innerText = `${user}:${message}`;
                                 toAdd.setAttribute("style", "color:lightblue;");
+                                toAdd.style.textAlign = "left";
+                                toAdd.style.overflow = "auto";
                                 messages.appendChild(toAdd);
 
                             }
@@ -58,12 +61,14 @@
                 const messages = document.getElementById("messages");
                 if(messages) {
                     const toAdd = document.createElement("p");
-                    toAdd.innerText = `self:${message}`;
+                    toAdd.innerText = `self: ${message}`;
                     toAdd.setAttribute("style", "color:blue;");
+                    toAdd.style.textAlign = "left";
+                    toAdd.style.overflow = "auto";
                     messages.appendChild(toAdd);
                     input.value = "";
                 }
-                ws.send(`${name}:${message}`)
+                ws.send(`${name}: ${message}`)
 
             }
         }
@@ -78,7 +83,7 @@
 </head>
 <body>
     <div id="form-container" style="justify-content: center; align-items: center; text-align: center;align-self:center;">
-        <h1>Enter name to continue</h1>
+        <h1  style="margin-top: 2em">Enter name to continue</h1>
         <form id="username-form">
             <label for = "username">Name:</label>
             <input type="text" placeholder="enter name" id = "username"/>
@@ -86,10 +91,10 @@
         </form>
         <p id="error" style="color:red"></p>
     </div>
-    <div id = "messages-container" style="display:none">
-        <h1>Chat</h1>
-        <div id="messages"></div>
-        <form id="message-form">
+    <div id = "messages-container" style="display:none;">
+        <h1 style="margin-top: 1em; margin-bottom:1em">Chat</h1>
+        <div id="messages" style="padding-top:1em;padding-bottom:1em;padding-right:.5em;padding-left:.5em;margin-left:auto;margin-right:auto;width:75%;height:75%;border:1px solid black;border-radius:10px;overflow-y:scroll"></div>
+        <form id="message-form" style="margin-top: 1em; padding:.5em;margin-left:auto;margin-right:auto;width:75%;border:1px solid black;border-radius:10px">
             <label for = "message">Message:</label>
             <input type="text" placeholder="..." id = "message"/>
         </form>
