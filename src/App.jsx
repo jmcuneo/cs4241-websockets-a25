@@ -5,11 +5,14 @@ import './App.css'
 function App() {
 
   const options = {
-      Color: {r: 255, g: 255, b: 255}
+            Color: {r: 255, g: 255, b: 255},
+            Width: 50
     }
 
   const pane = new Tweakpane.Pane();
   pane.addInput(options, 'Color');
+    pane.addInput(options, 'Width', { min: 1, max: 200 }); // brush width
+
 
   const [count, setCount] = useState(0)
   const [msgs, setMsgs] = useState([])
@@ -28,7 +31,7 @@ function App() {
 
 
                 ctx.fillStyle = data.color
-                ctx.fillRect(x, y, 50, 50)
+                ctx.fillRect(x, y, data.size || 50, data.size || 50)
             }
         }
 
@@ -52,11 +55,12 @@ function App() {
                 const data = {
                     x: e.pageX,
                     y: e.pageY,
+                    size: options.Width,
                     color: "rgba(" + options.Color.r + "," + options.Color.g + "," + options.Color.b + "," + "1)"
                 }
                 ws.send(JSON.stringify(data))
                 ctx.fillStyle = "rgba(" + options.Color.r + "," + options.Color.g + "," + options.Color.b + "," + "1)"
-                ctx.fillRect(e.pageX, e.pageY, 50, 50)
+                ctx.fillRect(e.pageX, e.pageY, options.Width, options.Width)
             }
 
         }
