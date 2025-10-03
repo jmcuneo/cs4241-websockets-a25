@@ -1,41 +1,54 @@
 <html lang="en">
-  <head>
+<head>
     <style>
-      body { 
-        margin:0; 
-        background:black 
-      } 
+        body { margin:0; background:black }
+        #toolbar {
+            position:fixed;
+            top:10px;
+            left:10px;
+            background:white;
+            padding:5px;
+            border-radius:8px;
+            font-family:sans-serif;
+        }
     </style>
     <script>
-      let ws, msgs = [], ctx = null
-      
-      window.onload = function() {
-        ws = new WebSocket( 'ws://127.0.0.1:3000' )
+        let ws, ctx = null
+        let color = "#ffff00"
 
-        ws.onopen = () => {
-          ws.onmessage = async msg => {
-            const pos = await msg.data.text()
-            const [x,y] = pos.split( ':' ).map( v => parseInt(v) )
+        window.onload = function() {
+            ws = new WebSocket('ws://127.0.0.1:3000')
 
-            ctx.fillStyle = 'red'
-            ctx.fillRect( x,y,50,50 )
-          }
+            ws.onopen = () => {
+                ws.onmessage = async msg => {
+                    const data = JSON.parse(await msg.data.text())
+                    ctx.fillStyle = data.color
+                    ctx.fillRect(data.x, data.y, 50, 50)
+                }
+            }
+
+            const canvas = document.querySelector('canvas')
+            canvas.width = window.innerWidth
+            canvas.height = window.innerHeight
+            ctx = canvas.getContext('2d')
+
+            window.onclick = e => {
+                const payload = { x: e.pageX, y: e.pageY, color }
+                ws.send(JSON.stringify(payload))
+
+                ctx.fillStyle = color
+                ctx.fillRect(e.pageX, e.pageY, 50, 50)
+            }
+
+            const picker = document.querySelector('#colorPicker')
+            picker.oninput = e => { color = e.target.value }
         }
-
-        const canvas = document.querySelector('canvas')
-        canvas.width = window.innerWidth
-        canvas.height = window.innerHeight
-        ctx = canvas.getContext( '2d' )
-
-        window.onclick = e => {
-          ws.send( `${e.pageX}:${e.pageY}` )
-          ctx.fillStyle = 'yellow'
-          ctx.fillRect( e.pageX,e.pageY,50,50 )
-        }
-      }
     </script>
-  </head>
-  <body>
-    <canvas></canvas>
-  </body>
+</head>
+<body>
+<div id="toolbar">
+    Pick a color: <input type="color" id="colorPicker" value="#ffff00">
+</div>
+<canvas></canvas>
+</body>
 </html>
