@@ -1,0 +1,19 @@
+{
+    "name": "cs4241-websockets-a25-gr17",
+    "version": "1.0.0",
+    "type": "module",
+    "private": true,
+    "scripts": {
+      "dev": "vite",
+      "server": "node server.js",
+      "start": "node server.js"
+    },
+    "dependencies": {
+      "express": "^4.19.2",
+      "vite-express": "^0.15.0",
+      "ws": "^8.18.0"
+    },
+    "devDependencies": {
+      "vite": "^5.4.0"
+    }
+  }

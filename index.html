@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Shared Doodle Board (ICE 05)</title>
+    <style>
+      :root { --pad: 8px; }
+      body { margin: 0; font-family: system-ui, sans-serif; }
+      header {
+        display: flex; gap: 8px; align-items: center;
+        padding: var(--pad); border-bottom: 1px solid #ddd;
+      }
+      header > * { font-size: 14px; }
+      #size { width: 120px; }
+      #board { display: block; width: 100vw; height: calc(100vh - 54px); cursor: crosshair; }
+      .spacer { flex: 1; }
+      .pill { padding: 4px 8px; border: 1px solid #ddd; border-radius: 999px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <strong>Shared Doodle Board</strong>
+      <span class="pill">ICE 05: WebSockets</span>
+
+      <label>Color <input type="color" id="color" value="#ff0055" /></label>
+      <label>Size <input type="range" id="size" min="2" max="24" value="6" /></label>
+      <button id="clear">Clear</button>
+
+      <div class="spacer"></div>
+      <span id="status">connecting…</span>
+    </header>
+
+    <canvas id="board"></canvas>
+
+    <script>
+      let ws
+      const canvas = document.getElementById('board')
+      const ctx = canvas.getContext('2d')
+      const color = document.getElementById('color')
+      const size = document.getElementById('size')
+      const statusEl = document.getElementById('status')
+      const clearBtn = document.getElementById('clear')
+
+      function resize() {
+        canvas.width = window.innerWidth
+        canvas.height = window.innerHeight - document.querySelector('header').offsetHeight
+      }
+      window.addEventListener('resize', resize)
+      resize()
+
+      // helpers for drawing
+      function drawDot(x, y, col, s) {
+        ctx.fillStyle = col
+        ctx.beginPath()
+        ctx.arc(x, y, (s || 6) / 2, 0, Math.PI * 2)
+        ctx.fill()
+      }
+      function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height) }
+
+      // WebSocket connection + receiving
+      const WS_URL = 'ws://127.0.0.1:3000/draw'
+      function connect() {
+        ws = new WebSocket(WS_URL)
+
+        ws.onopen = () => { statusEl.textContent = 'connected' }
+        ws.onclose = () => { statusEl.textContent = 'disconnected (retrying…)'; setTimeout(connect, 1000) }
+
+        ws.onmessage = (evt) => {
+          let msg
+          try { msg = JSON.parse(evt.data) } catch { return }
+
+          if (msg.type === 'history' && Array.isArray(msg.events)) {
+            // replay sv history to make it appear in others
+            clearCanvas()
+            for (const ev of msg.events) {
+              if (ev.type === 'draw') drawDot(ev.x, ev.y, ev.color, ev.size)
+              else if (ev.type === 'clear') clearCanvas()
+            }
+          } else if (msg.type === 'draw') {
+            drawDot(msg.x, msg.y, msg.color, msg.size)
+          } else if (msg.type === 'clear') {
+            clearCanvas()
+          }
+        }
+      }
+      connect()
+
+      // draw locally then boradcast
+      let drawing = false
+      function getXY(e) {
+        const r = canvas.getBoundingClientRect()
+        const cx = (e.clientX ?? e.touches?.[0]?.clientX) - r.left
+        const cy = (e.clientY ?? e.touches?.[0]?.clientY) - r.top
+        return { x: Math.floor(cx), y: Math.floor(cy) }
+      }
+      function send(msg) { if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify(msg)) }
+
+      canvas.addEventListener('mousedown', (e) => {
+        drawing = true
+        const { x, y } = getXY(e)
+        const ev = { type: 'draw', x, y, color: color.value, size: parseInt(size.value, 10) }
+        drawDot(ev.x, ev.y, ev.color, ev.size); send(ev)
+      })
+      canvas.addEventListener('mousemove', (e) => {
+        if (!drawing) return
+        const { x, y } = getXY(e)
+        const ev = { type: 'draw', x, y, color: color.value, size: parseInt(size.value, 10) }
+        drawDot(ev.x, ev.y, ev.color, ev.size); send(ev)
+      })
+      window.addEventListener('mouseup', () => { drawing = false })
+      canvas.addEventListener('mouseleave', () => { drawing = false })
+
+      // touch
+      canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault()
+        drawing = true
+        const { x, y } = getXY(e)
+        const ev = { type: 'draw', x, y, color: color.value, size: parseInt(size.value, 10) }
+        drawDot(ev.x, ev.y, ev.color, ev.size); send(ev)
+      }, { passive: false })
+      canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault()
+        if (!drawing) return
+        const { x, y } = getXY(e)
+        const ev = { type: 'draw', x, y, color: color.value, size: parseInt(size.value, 10) }
+        drawDot(ev.x, ev.y, ev.color, ev.size); send(ev)
+      }, { passive: false })
+      window.addEventListener('touchend', () => { drawing = false })
+
+      clearBtn.addEventListener('click', () => { clearCanvas(); send({ type: 'clear' }) })
+    </script>
+  </body>
+</html>

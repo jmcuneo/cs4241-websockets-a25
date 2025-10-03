@@ -1,17 +1,29 @@
-# ICE 05: Websockets
+# ICE 05 - WebSockets
 
-In this activity, you will work in groups to build a simple websockets application
+Group Number and Members: 17 - Utku Yakar
 
-### Instructions
+## Description
+This is a simple collaborative doodle board using Node.js, Express, and WebSockets.
+Everyone who accesses the page is able to contribute to the same canvas in real time. My inspiration was Garctic.io.
+Drawings are broadcasted to all the connected clients and new users can see the present board when they join.
+There is a clear reset button that resets the canvas for everyone, because it gets cluttered quick.
 
-1. Divide yourselves into groups of 3 - 5 students. **Make sure to register all your group members on Canvas so that you get credit.**
 
-2. Implement the basic websockets setup demo from the [sockets guide](https://github.com/jmcuneo/cs4241-guides/blob/master/using.sockets.md). Make sure that is up and running correctly before proceeding to the next step.
 
-3. Using the demo as a starting point, create a simple networked web application. Make sure the application can handle everybody in your group. Be creative, but manage your time and expectations wisely so that you have a complete application to submit by the end of class.
 
-4. Write up a README file that includes the names of all of your group members and a description of what the application does. Be sure to list anything a user might need to know before using your application. Also describe any challenges your group faced.
+## How to use
+- Run npm install 
+- Start the servers in two terminals:  
+  - npm run dev (starts Vite)  
+  - npm start (starts the WebSocket/Express server)  
+- Open the local URL that Vite shows (usually http://localhost:3000)  
+- Open in multiple tabs or browsers to see the shared drawing you are creating 
+- Pick a color/size, click and drag to draw, press clear to reset
 
-5. Submit your final assignment by initiating a pull request against this repo.
+## Notes
+- The board state is stored in the server’s memory, so if the server restarts the drawings are lost, so don't do that while testing
+- Works for a couple people, but don't think it's super scalable
 
-**NOTE:** The demo uses Svelte, but you are welcome to switch to a different UI framework if you prefer.
+## Challenges
+- At first the WebSocket server conflicted with Vite’s hot reload socket, causing infinite reconnects and you couldn't draw because of the refreshes. Fixed by putting the socket on a separate path (/draw).  
+- Added simple in-memory history so that new clients can see what was already drawn, otherwise it was just a bad doodle tool.  
