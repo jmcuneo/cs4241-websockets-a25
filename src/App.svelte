@@ -33,7 +33,9 @@
   }
 </script>
 
-<input type='text' on:change={send} />
+<input type='text' id = 'box' on:change={send} />
+<br>
+<input type='submit' id = 'submit' value='Send'/>
 
 {#each msgs as msg }
   <h3>{msg}</h3>
