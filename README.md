@@ -15,3 +15,8 @@ In this activity, you will work in groups to build a simple websockets applicati
 5. Submit your final assignment by initiating a pull request against this repo.
 
 **NOTE:** The demo uses Svelte, but you are welcome to switch to a different UI framework if you prefer.
+
+
+Group 03: Ceci Herriman, Christopher Yon, Andreas Keating, Kelsey Bishqemi
+
+Our application is a group whiteboard, where everyone can draw on the same canvas at the same time. Once the application is run, the user will be able to draw by clicking and dragging the mouse across the canvas.

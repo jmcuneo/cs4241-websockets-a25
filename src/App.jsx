@@ -3,10 +3,18 @@ import './App.css'
 
 
 function App() {
-    const [count, setCount] = useState(0)
-    const [msgs, setMsgs] = useState([])
-    let ws = null
-    let ctx = null
+
+  const options = {
+      Color: {r: 255, g: 255, b: 255}
+    }
+
+  const pane = new Tweakpane.Pane();
+  pane.addInput(options, 'Color');
+
+  const [count, setCount] = useState(0)
+  const [msgs, setMsgs] = useState([])
+  let ws = null
+  let ctx = null
 
     useEffect(() => {
         ws = new WebSocket('ws://127.0.0.1:3000')
@@ -46,7 +54,7 @@ function App() {
                 color: color
             }
             ws.send(JSON.stringify(data))
-            ctx.fillStyle = color
+            ctx.fillStyle = "rgba(" + options.Color.r + "," + options.Color.g + "," + options.Color.b + "," + "1)" 
             ctx.fillRect(e.pageX, e.pageY, 50, 50)
         }
     })
