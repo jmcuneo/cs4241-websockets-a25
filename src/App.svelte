@@ -7,6 +7,11 @@
   ws.onopen = () => {
     ws.send("a new client has connected.");
 
+    //get random color
+    const colors = ["red", "blue", "green", "orange", "purple"];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    document.body.style.backgroundColor = color;
+
     let name = setName();
 
     ws.onmessage = async (msg) => {
