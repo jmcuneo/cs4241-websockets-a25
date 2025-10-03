@@ -1,0 +1,27 @@
+body{
+    background-color: coral;
+    font-family: "Exo 2", sans-serif;
+}
+
+#box{
+    width: 300px;
+    height: 20px;
+    font-family: "Exo 2", sans-serif;
+    background-color: white;
+    color: black;
+    border-radius: 100px;
+}
+
+#submit{
+    font-family: "Exo 2", sans-serif;
+    background-color: blue;
+    border-radius: 100px;
+    height: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#submit:hover {
+    background-color: lightblue;
+    color: gray;
+}
