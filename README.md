@@ -6,7 +6,7 @@
 1. npm install
 2. In terminal, use the first local terminal npm run dev
 3. In the second terminal put node server.js
-4. Open up http://localhost:5177/ on two separate windows on the laptop
+4. Open up http://localhost:(Whatever Port opens on your laptop)/ on two separate windows on the laptop
 
 
 
