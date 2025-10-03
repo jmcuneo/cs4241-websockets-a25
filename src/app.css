@@ -3,3 +3,31 @@ body {
     overflow: hidden;
     background:black;
 }
+
+h3 {
+    color: black;
+}
+
+canvas {
+    background-color: white;
+}
+
+.fixed-chat {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}

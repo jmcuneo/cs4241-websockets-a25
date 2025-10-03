@@ -1,6 +1,6 @@
-
 <script>
     import { onMount } from "svelte";
+    import Message from "./Message.svelte";
 
     let isDrawing = false;
     let ws, ctx;
@@ -33,7 +33,7 @@
                 ctx.lineTo(data.x2, data.y2);
                 ctx.stroke();
             }
-        };
+        }
     });
 
     function draw(e) {
@@ -80,10 +80,6 @@
 </script>
 
 <style>
-    canvas {
-        border: 1px solid #ccc;
-        display: block;
-    }
     button {
         position: fixed;
         top: 10px;
@@ -101,9 +97,14 @@
 <button on:click={clearCanvas}>Clear Canvas</button>
 
 <!-- svelte-ignore element_invalid_self_closing_tag -->
-<canvas
-    on:mousedown={startDrawing}
-    on:mouseup={stopDrawing}
-    on:mouseleave={stopDrawing}
-    on:mousemove={draw}
-/>
+
+<div class="flex-row">
+
+    <Message></Message>
+    <canvas
+        on:mousedown={startDrawing}
+        on:mouseup={stopDrawing}
+        on:mouseleave={stopDrawing}
+        on:mousemove={draw}
+    />
+</div>
