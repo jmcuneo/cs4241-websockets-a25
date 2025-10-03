@@ -1,13 +1,71 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ice05</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+
+<head>
+  <style>
+    body {
+      margin: 0;
+      background: black
+    }
+  </style>
+  <script>
+    let ws, msgs = [], ctx = null
+    let isDrawing = false
+    let lastX = 0
+    let lastY = 0
+
+    window.onload = function () {
+      ws = new WebSocket('ws://127.0.0.1:3000')
+
+      ws.onopen = () => {
+        ws.onmessage = async msg => {
+          const data = await msg.data.text()
+          const [x1, y1, x2, y2] = data.split(':').map(v => parseInt(v))
+
+          ctx.beginPath()
+          ctx.moveTo(x1, y1)
+          ctx.lineTo(x2, y2)
+          ctx.strokeStyle = 'red'
+          ctx.lineWidth = 5
+          ctx.stroke()
+        }
+      }
+
+      const canvas = document.querySelector('canvas')
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+      ctx = canvas.getContext('2d')
+
+      canvas.addEventListener("mousedown", (e) => {
+        isDrawing = true
+          ;[lastX, lastY] = [e.offsetX, e.offsetY]
+      })
+
+      canvas.addEventListener("mousemove", (e) => {
+        if (!isDrawing) return
+
+        // Draw locally
+        ctx.beginPath()
+        ctx.moveTo(lastX, lastY)
+        ctx.lineTo(e.offsetX, e.offsetY)
+        ctx.strokeStyle = "orange"
+        ctx.lineWidth = 5
+        ctx.stroke()
+
+        // Send drawing data to server
+        ws.send(`${lastX}:${lastY}:${e.offsetX}:${e.offsetY}`)
+
+          ;[lastX, lastY] = [e.offsetX, e.offsetY]
+      })
+
+      canvas.addEventListener("mouseup", () => (isDrawing = false))
+      canvas.addEventListener("mouseout", () => (isDrawing = false))
+    }
+  </script>
+</head>
+
+<body>
+  <canvas></canvas>
+</body>
+
 </html>
