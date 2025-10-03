@@ -5,7 +5,48 @@
   <style>
     body {
       margin: 0;
-      background: black
+      background: black;
+      font-family: Arial, sans-serif;
+    }
+
+    #controls {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 100;
+    }
+
+    #randomButton {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    #randomButton:hover {
+      background: #45a049;
+    }
+
+    #prompt {
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      border-radius: 5px;
+      max-width: 300px;
+    }
+
+    h1 {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 100;
+      margin: 0;
     }
   </style>
   <script>
@@ -14,12 +55,44 @@
     let lastX = 0
     let lastY = 0
 
+    const randomObjects = [
+      'a cat sitting on a windowsill',
+      'a tree with birds in it',
+      'a house with a chimney',
+      'a car driving on a road',
+      'a person walking a dog',
+      'a flower in a pot',
+      'a mountain with clouds',
+      'a boat on water',
+      'a bicycle in a park',
+      'a coffee cup on a table',
+      'a butterfly on a flower',
+      'a castle with flags',
+      'a robot with antenna',
+      'a pizza slice',
+      'a rainbow over hills',
+      'a fish swimming',
+      'a rocket ship',
+      'a snowman with a hat',
+      'a dragon breathing fire',
+      'a unicorn with wings'
+    ]
+
     window.onload = function () {
       ws = new WebSocket('ws://127.0.0.1:3000')
 
       ws.onopen = () => {
         ws.onmessage = async msg => {
           const data = await msg.data.text()
+
+          // Check if this is a drawing prompt message
+          if (data.startsWith('PROMPT:')) {
+            const prompt = data.substring(7) // Remove 'PROMPT:' prefix
+            document.getElementById('prompt').textContent = `Draw: ${prompt}`
+            return
+          }
+
+          // Otherwise it's drawing data
           const [x1, y1, x2, y2] = data.split(':').map(v => parseInt(v))
 
           ctx.beginPath()
@@ -60,12 +133,29 @@
 
       canvas.addEventListener("mouseup", () => (isDrawing = false))
       canvas.addEventListener("mouseout", () => (isDrawing = false))
+
+      // Add button click handler
+      document.getElementById('randomButton').addEventListener('click', () => {
+        const randomIndex = Math.floor(Math.random() * randomObjects.length)
+        const selectedObject = randomObjects[randomIndex]
+
+        // Display locally
+        document.getElementById('prompt').textContent = `Draw: ${selectedObject}`
+
+        // Send to all other clients
+        ws.send(`PROMPT:${selectedObject}`)
+      })
     }
   </script>
 </head>
 
 <body>
   <h1 style="color: white;">Draw Together - ICE05 Team 8</h1>
+
+  <div id="controls">
+    <button id="randomButton">Pick Random Object</button>
+    <div id="prompt">Click the button to get a drawing prompt!</div>
+  </div>
   <canvas></canvas>
 </body>
 
