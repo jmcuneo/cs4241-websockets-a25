@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "dependencies": {
+    "express": "^5.1.0",
+    "vite": "^7.1.9",
+    "vite-express": "^0.21.1",
+    "ws": "^8.18.3"
+  }
+}
