@@ -15,8 +15,26 @@
     };
   };
 
+  function getRandomInt(min, max){
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min +1)) + min;
+  }
+
+  function changeText(text){
+    const textLength = text.length;
+    const index = getRandomInt(0, textLength);
+    const replacement = String.fromCharCode(getRandomInt(97, 122));
+    let charArray = text.split('');
+    charArray[index] = replacement;
+    return charArray.join('')
+  }
+
   const send = function () {
-    const txt = document.querySelector("input").value;
+    let text = document.querySelector("input").value;
+    const txt = changeText(text)
+    console.log(text);
+    console.log(txt)
     ws.send(txt);
     msgs = msgs.concat(["me: " + txt]);
   };
