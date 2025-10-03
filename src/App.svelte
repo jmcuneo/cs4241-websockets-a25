@@ -7,18 +7,28 @@
   ws.onopen = () => {
     ws.send("a new client has connected.");
 
+    let name = setName();
+
     ws.onmessage = async (msg) => {
       // add message to end of msgs array,
       // re-assign to trigger UI update
       const message = await msg.data.text();
-      msgs = msgs.concat(["them: " + message]);
+      msgs = msgs.concat([name + ": " + message]);
     };
   };
 
   const send = function () {
     const txt = document.querySelector("input").value;
     ws.send(txt);
-    msgs = msgs.concat(["me: " + txt]);
+    msgs = msgs.concat(["Me: " + txt]);
+  };
+
+  //add name
+  let setName = function () {
+    //ask for name with promt
+    let name = prompt("Enter your name:");
+    ws.send(name + " has joined the chat.");
+    return name;
   };
 </script>
 
