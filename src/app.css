@@ -1,0 +1,24 @@
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15px, 1fr));
+  gap: 1px;
+  width: 95vw;
+}
+
+.cell {
+  aspect-ratio: 1 / 1;
+  background: lightgray;
+  cursor: pointer;
+}
+
+.cell.active {
+  background: blue;
+}

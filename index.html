@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="/src/app.css">
+</head>
+<body>
+  <div id="active">count</div>
+  <div id="index">index</div>
+  <div id="grid" class="grid"></div>
+
+  <script>
+    let ws = null
+    const allCells = [];
+
+    const grid = document.getElementById('grid');
+    const count = 3995;
+
+    window.onload = function() {
+      ws = new WebSocket( 'ws://127.0.0.1:3000' )
+
+      for (let i = 0; i < count; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        allCells.push(cell);
+
+        cell.addEventListener('click', () => {
+          const index = allCells.indexOf(cell);
+          cell.classList.toggle('active');
+          ws.send(index.toString());
+
+          document.getElementById('active').textContent = (allCells.length).toString();
+        });
+        grid.appendChild(cell);
+      }
+
+      ws.onopen = () => {
+        ws.onmessage = async msg => {
+          const index = parseInt(msg.data, 10);
+          console.log(index);
+
+          if (!Number.isNaN(index)) {
+            document.getElementById('index').textContent = index.toString();
+
+            const cell = allCells[index];
+            if (cell) {
+              cell.classList.toggle('active');
+            }
+          }
+        }
+      }
+
+      // window.onclick = e => {
+      //   ws.send( "" )
+      // }
+    }
+  </script>
+</body>
+</html>
+
