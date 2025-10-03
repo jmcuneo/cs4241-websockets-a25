@@ -2,53 +2,10 @@
 <head>
     <style>
         body { margin:0; background:black }
-        #toolbar {
-            position:fixed;
-            top:10px;
-            left:10px;
-            background:white;
-            padding:5px;
-            border-radius:8px;
-            font-family:sans-serif;
-        }
     </style>
-    <script>
-        let ws, ctx = null
-        let color = "#ffff00"
-
-        window.onload = function() {
-            ws = new WebSocket('ws://127.0.0.1:3000')
-
-            ws.onopen = () => {
-                ws.onmessage = async msg => {
-                    const data = JSON.parse(await msg.data.text())
-                    ctx.fillStyle = data.color
-                    ctx.fillRect(data.x, data.y, 50, 50)
-                }
-            }
-
-            const canvas = document.querySelector('canvas')
-            canvas.width = window.innerWidth
-            canvas.height = window.innerHeight
-            ctx = canvas.getContext('2d')
-
-            window.onclick = e => {
-                const payload = { x: e.pageX, y: e.pageY, color }
-                ws.send(JSON.stringify(payload))
-
-                ctx.fillStyle = color
-                ctx.fillRect(e.pageX, e.pageY, 50, 50)
-            }
-
-            const picker = document.querySelector('#colorPicker')
-            picker.oninput = e => { color = e.target.value }
-        }
-    </script>
 </head>
 <body>
-<div id="toolbar">
-    Pick a color: <input type="color" id="colorPicker" value="#ffff00">
-</div>
-<canvas></canvas>
+    <script type="module" src="src/script.js"></script>
+    <canvas></canvas>
 </body>
 </html>
