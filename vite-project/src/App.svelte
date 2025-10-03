@@ -1,84 +1,99 @@
 <script>
   import { onMount } from 'svelte';
 
-  let canvasEl;      // The <canvas> element itself
-  let ctx;           // The 2D drawing context
+  let canvasEl;
+  let ctx;
   let isDrawing = false;
   let lastX = 0;
   let lastY = 0;
 
   let ws;
+  let userColor; // this user’s color
+  const colors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231'];
+
+  // assign a random color per user
+  userColor = colors[Math.floor(Math.random() * colors.length)];
+
+  // store other users’ cursors for fading effect
+  let trails = [];
 
   onMount(() => {
-    // Get the 2D context for drawing
     ctx = canvasEl.getContext('2d');
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
     ctx.lineWidth = 5;
 
-    // --- WebSocket Connection ---
     ws = new WebSocket('ws://127.0.0.1:3100');
 
     ws.onopen = () => {
       console.log('Connected to WebSocket server.');
     };
 
-    // Listen for drawing data from other clients
     ws.onmessage = async msg => {
       const data = JSON.parse(await msg.data.text());
-
-      // Draw the line received from another user
-      drawLine(data.x1, data.y1, data.x2, data.y2, data.color);
+      // add trail with timestamp for fading
+      trails.push({...data, timestamp: Date.now()});
     };
+
+    // Animation loop to redraw canvas with fading effect
+    const animate = () => {
+      ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+
+      const now = Date.now();
+      trails = trails.filter(t => now - t.timestamp < 2000); // keep last 2 seconds
+
+      trails.forEach(t => {
+        const age = (now - t.timestamp) / 2000; // 0 -> 1
+        const alpha = 1 - age; // fade out
+        drawLine(t.x1, t.y1, t.x2, t.y2, t.color, alpha);
+      });
+
+      requestAnimationFrame(animate);
+    };
+    animate();
   });
 
-  // Main function to draw a line on the canvas
-  const drawLine = (x1, y1, x2, y2, color = 'black') => {
+  const drawLine = (x1, y1, x2, y2, color = 'black', alpha = 1) => {
     ctx.strokeStyle = color;
+    ctx.globalAlpha = alpha;
     ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
     ctx.stroke();
+    ctx.globalAlpha = 1; // reset alpha
   };
 
-
-  // --- Mouse Event Handlers ---
-
-  const startDrawing = (e) => {
+  const startDrawing = e => {
     isDrawing = true;
-    // Update the last known position
     [lastX, lastY] = [e.offsetX, e.offsetY];
   };
 
-  const draw = (e) => {
-    if (!isDrawing) return; // Stop if mouse is not down
+  const draw = e => {
+    if (!isDrawing) return;
 
     const newX = e.offsetX;
     const newY = e.offsetY;
 
-    // 1. Draw on the local canvas immediately
-    drawLine(lastX, lastY, newX, newY);
+    // draw locally immediately
+    trails.push({x1: lastX, y1: lastY, x2: newX, y2: newY, color: userColor, timestamp: Date.now()});
 
-    // 2. Send the coordinates to the server to be broadcast
+    // send to server
     if (ws && ws.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify({
         x1: lastX,
         y1: lastY,
         x2: newX,
         y2: newY,
-        // You could even add color!
-        // color: 'blue'
+        color: userColor
       }));
     }
 
-    // 3. Update the last position for the next segment
     [lastX, lastY] = [newX, newY];
   };
 
   const stopDrawing = () => {
     isDrawing = false;
   };
-
 </script>
 
 <style>
@@ -88,20 +103,13 @@
   }
 </style>
 
-<h2>Collaborative Canvas 🎨</h2>
+<h2>Collaborative Canvas with Fading Trails 🎨</h2>
 <canvas
-  bind:this={canvasEl}
-  width={800}
-  height={600}
-  on:mousedown={startDrawing}
-  on:mousemove={draw}
-  on:mouseup={stopDrawing}
-  on:mouseleave={stopDrawing}
->
-</canvas>
-
-<!-- <input type='text' on:change={send} />
-
-{#each msgs as msg }
-  <h3>{msg}</h3>
-{/each} -->
+        bind:this={canvasEl}
+        width={800}
+        height={600}
+        on:mousedown={startDrawing}
+        on:mousemove={draw}
+        on:mouseup={stopDrawing}
+        on:mouseleave={stopDrawing}
+/>
