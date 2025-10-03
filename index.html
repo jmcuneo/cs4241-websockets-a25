@@ -21,18 +21,42 @@
             ctx.fillRect( x,y,50,50 )
           }
         }
+       
 
         const canvas = document.querySelector('canvas')
         canvas.width = window.innerWidth
         canvas.height = window.innerHeight
+        let x = 0;
+        let y = 0;
+        let isDrawing = false;
         ctx = canvas.getContext( '2d' )
 
         window.onclick = e => {
+          isDrawing = true;
+          const position = {x: e.pageX, y: e.pageY};
+          x= position.x;
+          y= position.y;
           ws.send( `${e.pageX}:${e.pageY}` )
           ctx.fillStyle = 'yellow'
           ctx.fillRect( e.pageX,e.pageY,50,50 )
         }
-      }
+        window.addEventListener("mousemove", (e) =>{
+            if (!isDrawing) return; 
+            const position = {x: e.pageX ,y: e.pageY};
+            context.beginPath();
+            context.lineWidth = 5;
+            context.strokeStyle = 'yellow';
+            context.lineCap = 'round';
+            context.moveTo(x, y);
+            x=(position.x);
+            y= position.y;
+            context.lineTo(x,y);
+            context.stroke();
+        });
+        window.addEventListener("mouseup", (e) =>{
+            isDrawing = false;
+            
+        });
     </script>
   </head>
   <body>
