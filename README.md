@@ -12,5 +12,6 @@ Our application builds upon the demo app of a real-time websocket, but with inpu
 - We decided to use TypeScript for an additonal challenge, as we had add types to the given server and client code.
 - We had trouble trying to terminate the connection reliably, as the server would sometimes not send the termination message before closing the connection.
 - Our group had zero experience with websockets, so getting the demo up and running took a while.
+- None of us are familiar with Svelte, as we all used React for assignment a4. 
 
 
