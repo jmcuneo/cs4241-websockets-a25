@@ -17,11 +17,18 @@
             const pos = await msg.data.text()
             const [x,y] = pos.split( ':' ).map( v => parseInt(v) )
 
-            ctx.fillStyle = 'red'
-            ctx.fillRect( x,y,50,50 )
+            
+            ctx.beginPath();
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = 'red';
+            ctx.lineCap = 'round';
+            ctx.moveTo(x, y);
+            const position = msg.data.text()
+            const [newX, newY] = pos.split( ':' ).map(v => parseInt(v) );
+            ctx.lineTo(newX,newY);
+            ctx.stroke();
           }
         }
-       
 
         const canvas = document.querySelector('canvas')
         canvas.width = window.innerWidth
@@ -31,32 +38,34 @@
         let isDrawing = false;
         ctx = canvas.getContext( '2d' )
 
-        window.onclick = e => {
+        window.addEventListener("mousedown", (e) => {
           isDrawing = true;
           const position = {x: e.pageX, y: e.pageY};
           x= position.x;
           y= position.y;
-          ws.send( `${e.pageX}:${e.pageY}` )
-          ctx.fillStyle = 'yellow'
-          ctx.fillRect( e.pageX,e.pageY,50,50 )
-        }
-        window.addEventListener("mousemove", (e) =>{
+          ws.send(`${x}:${y}`)
+        //   ctx.fillStyle = 'yellow'
+        //   ctx.fillRect( e.pageX,e.pageY,50,50 )
+        })
+        let coord_array = [];
+        window.addEventListener("mousemove", (e) => {
             if (!isDrawing) return; 
             const position = {x: e.pageX ,y: e.pageY};
-            context.beginPath();
-            context.lineWidth = 5;
-            context.strokeStyle = 'yellow';
-            context.lineCap = 'round';
-            context.moveTo(x, y);
+            ws.send(`${x}:${y}`)
+            ctx.beginPath();
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = 'white';
+            ctx.lineCap = 'round';
+            ctx.moveTo(x, y);
             x=(position.x);
             y= position.y;
-            context.lineTo(x,y);
-            context.stroke();
+            ctx.lineTo(x,y);
+            ctx.stroke();
         });
         window.addEventListener("mouseup", (e) =>{
             isDrawing = false;
-            
         });
+    }
     </script>
   </head>
   <body>
