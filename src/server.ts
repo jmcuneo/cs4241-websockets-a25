@@ -29,6 +29,11 @@ socketServer.on( 'connection', client => {
   clients.push( client )
 })
 
+app.post ( '/close', (req, res) =>{
+  console.log("okay ill delete it ");
+  process.exit(0);
+})
+
 server.listen( 3000 )
 
 ViteExpress.bind( app, server )
