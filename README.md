@@ -1,17 +1,45 @@
-# ICE 05: Websockets
+# ICE 05: Websockets – Real-Time Stock Ticker
 
-In this activity, you will work in groups to build a simple websockets application
+In this activity, I implemented a WebSockets-based application that simulates a real-time stock ticker feed. Instead of chat messages, users post stock updates (e.g., "AAPL +2.5%", "TSLA -1.1%"), and the updates are broadcast instantly to all connected clients.
 
-### Instructions
+---
 
-1. Divide yourselves into groups of 3 - 5 students. **Make sure to register all your group members on Canvas so that you get credit.**
+### Author
+- Aditya Patel
 
-2. Implement the basic websockets setup demo from the [sockets guide](https://github.com/jmcuneo/cs4241-guides/blob/master/using.sockets.md). Make sure that is up and running correctly before proceeding to the next step.
+---
 
-3. Using the demo as a starting point, create a simple networked web application. Make sure the application can handle everybody in your group. Be creative, but manage your time and expectations wisely so that you have a complete application to submit by the end of class.
+### What the Application Does
+- The app allows multiple clients to connect via WebSockets.
+- Any user can type in a stock update (ticker + % change).
+- Positive changes show up in green with 📈, negative changes in red with 📉, and neutral updates remain white with 💹.
+- This creates a simple  finance dashboard that feels like a live stock market feed.
 
-4. Write up a README file that includes the names of all of your group members and a description of what the application does. Be sure to list anything a user might need to know before using your application. Also describe any challenges your group faced.
+---
 
-5. Submit your final assignment by initiating a pull request against this repo. You are welcome to deploy this project on a hosting service, but focus on getting something that works on your local machines.
+### How to Run
 
-**NOTE:** The demo uses Svelte, but you are welcome to switch to a different UI framework if you prefer.
+1. Install dependencies:
+   npm install
+   npm install express vite-express ws
+2. Run the WebSocket server:
+   node server.js
+3. Run the Vite frontend in a second terminal:
+   npm run dev
+4. en http://localhost:5173 in two or more browser tabs.
+5. Type in stock updates (e.g., "MSFT +1.7%") → they appear on all clients in real time.
+
+---
+
+### Challenges Faced
+- Initially installed dependencies in the wrong folder (caused ERR_MODULE_NOT_FOUND errors). Fixed by re-installing inside the correct project directory.
+- Debugged WebSocket connections between Vite’s dev server and the Node WebSocket server.
+- Adjusted Svelte UI updates to re-render correctly when new stock updates arrived.
+- Managing project solo required careful time management.
+
+---
+
+### Notes
+- Built using Svelte + WebSockets + Express + ViteExpress.
+- Focused on keeping the project simple but unique by making it finance-themed instead of just a chat demo.
+- Submitted at home
