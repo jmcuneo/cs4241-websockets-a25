@@ -1,17 +1,17 @@
 # ICE 05: Websockets
+Group Members: Timothy Hutzley (Solo)
 
-In this activity, you will work in groups to build a simple websockets application
+## Description
+This is a real-time number guessing game where a random number between 1-100 is generated and every player connected to the site can begin guessing numbers. The application displays the player's name, along with their guess, and whether the guess was too high, too low, or the correct value. Once the correct value has been guessed, the game will congratulate the winning player and reset the random number to allow players to continue guessing indefinitely.
 
-### Instructions
+## How to Use
+1. First ensure you are in the "vite-project" directory
+2. Install dependencies using: `npm install`
+3. Start the server using: `node server.js`
+3. In a new terminal, start the client using: `npm run dev`
+4. Open http://localhost:5173/ in multiple browser tabs to test guessing different numbers with multiple players
+5. Enter a number into the input box, click guess, and hope you got it right!
 
-1. Divide yourselves into groups of 3 - 5 students. **Make sure to register all your group members on Canvas so that you get credit.**
+## Challenges Faced
+The only real challenge that I faced when developing this app was getting the game to reset properly when the correct number is guessed. Actually removing the bulleted list of messages and setting a new secret number were easy to implement, however, the logic to actually communicate between the server and frontend was what made this challenging. Instead of sending strings, I decided to instead send a JSON object with the strings and a flag to determine whether or not to reset the game. 
 
-2. Implement the basic websockets setup demo from the [sockets guide](https://github.com/jmcuneo/cs4241-guides/blob/master/using.sockets.md). Make sure that is up and running correctly before proceeding to the next step.
-
-3. Using the demo as a starting point, create a simple networked web application. Make sure the application can handle everybody in your group. Be creative, but manage your time and expectations wisely so that you have a complete application to submit by the end of class.
-
-4. Write up a README file that includes the names of all of your group members and a description of what the application does. Be sure to list anything a user might need to know before using your application. Also describe any challenges your group faced.
-
-5. Submit your final assignment by initiating a pull request against this repo. You are welcome to deploy this project on a hosting service, but focus on getting something that works on your local machines.
-
-**NOTE:** The demo uses Svelte, but you are welcome to switch to a different UI framework if you prefer.
