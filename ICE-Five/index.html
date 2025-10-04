@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang='en'>
+  <head>
+    <style>
+      body { 
+        margin: 0; 
+        background: #a83c3c;
+      }
+
+      button {
+        margin: 5px;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        background: #ffd9d9;
+      }
+
+      button:hover {
+        background: #dd9d9d;
+      }
+      
+      button.active {
+        background: #af5050
+      }
+
+      #shapes {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        background: #ff8ccf;
+        padding: 10px;
+        border-radius: 8px;
+      }
+
+      #colours {
+        position: fixed;
+        top: 80px;
+        left: 10px;
+        background: #ff8ccf;
+        padding: 10px;
+        border-radius: 8px;
+      }
+
+      #sizes {
+        position: fixed;
+        top: 150px;
+        left: 10px;
+        background: #da67aa;
+        padding: 10px;
+        border-radius: 8px;
+      }
+    </style>
+    <script>
+      let ws;
+      let msgs = [];
+      let ctx = null;
+
+      let currentShape = 'circle';
+      let currentColour = 'violet';
+      let currentSize = 'average';
+      
+      window.onload = function(){
+        ws = new WebSocket('ws://127.0.0.1:3000');
+
+        ws.onopen = () => {
+          ws.onmessage = async msg => {
+            const pos = await msg.data.text();
+            const [shape, colour, size, x, y] = pos.split(':').map((v, i) => i === 0 ? v : parseInt(v));
+            drawShape(ctx, shape, colour, size, x, y);
+          }
+        }
+
+        const canvas = document.querySelector('canvas');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        ctx = canvas.getContext('2d');
+
+        document.getElementById('circle-button').addEventListener('click', () => setShape('circle'));
+        document.getElementById('square-button').addEventListener('click', () => setShape('square'));
+        document.getElementById('triangle-button').addEventListener('click', () => setShape('triangle'));
+        document.getElementById('diamond-button').addEventListener('click', () => setShape('diamond'));
+        document.getElementById('trapezoid-button').addEventListener('click', () => setShape('trapezoid'));
+
+        document.getElementById('red-button').addEventListener('click', () => setColour('red'));
+        document.getElementById('orange-button').addEventListener('click', () => setColour('orange'));
+        document.getElementById('yellow-button').addEventListener('click', () => setColour('yellow'));
+        document.getElementById('green-button').addEventListener('click', () => setColour('green'));
+        document.getElementById('blue-button').addEventListener('click', () => setColour('blue'));
+        document.getElementById('indigo-button').addEventListener('click', () => setColour('indigo'));
+        document.getElementById('violet-button').addEventListener('click', () => setColour('violet'));
+
+        document.getElementById('tiny-button').addEventListener('click', () => setSize('tiny'));
+        document.getElementById('small-button').addEventListener('click', () => setSize('small'));
+        document.getElementById('average-button').addEventListener('click', () => setSize('average'));
+        document.getElementById('big-button').addEventListener('click', () => setSize('big'));
+        document.getElementById('huge-button').addEventListener('click', () => setSize('huge'));
+
+        window.onclick = e => {
+          if (e.target.tagName === 'BUTTON')
+            return;
+
+          ws.send(`${currentShape}:${currentColour}:${currentSize}:${e.pageX}:${e.pageY}`);
+          drawShape(ctx, currentShape, currentColour, currentSize, e.pageX, e.pageY);
+        }
+
+        setShape('circle');
+        setColour('violet');
+        setSize('average');
+      }
+
+      const setShape = function(shape){
+        currentShape = shape;
+        document.querySelectorAll('#shapes button').forEach(i => {
+          i.classList.remove('active');
+        })
+        document.getElementById(`${shape}-button`).classList.add('active');
+      }
+
+      const setColour = function(colour){
+        currentColour = colour;
+        document.querySelectorAll('#colours button').forEach(i => {
+          i.classList.remove('active');
+        })
+        document.getElementById(`${colour}-button`).classList.add('active');
+      }
+
+      const setSize = function(size){
+        currentSize = size;
+        document.querySelectorAll('#sizes button').forEach(i => {
+          i.classList.remove('active');
+        })
+        document.getElementById(`${size}-button`).classList.add('active');
+      }
+
+      const drawShape = function(context, shape, colour, size, x, y){
+        switch(colour){
+          case 'red':
+            context.fillStyle = '#ee5387';
+            break;
+          case 'orange':
+            context.fillStyle = '#ffc67c';
+            break;
+          case 'yellow':
+            context.fillStyle = '#f5ff9b';
+            break;
+          case 'green':
+            context.fillStyle = '#97d861';
+            break;
+          case 'blue':
+            context.fillStyle = '#819edf';
+            break;
+          case 'indigo':
+            context.fillStyle = '#674ca7';
+            break;
+          case 'violet':
+            context.fillStyle = '#ca99cc';
+            break;
+        }
+
+        let sizeFactor;
+        switch(size){
+          case 'tiny':
+            sizeFactor = 0.5;
+            break;
+          case 'small':
+            sizeFactor = 1;
+            break;
+          case 'average':
+            sizeFactor = 2;
+            break;
+          case 'big':
+            sizeFactor = 3;
+            break;
+          case 'huge':
+            sizeFactor = 4;
+            break;
+        }
+
+        context.beginPath();
+
+        switch(shape){
+          case 'circle':
+            context.arc(x, y, 25 * sizeFactor, 0, 2 * Math.PI);
+            break;
+          case 'square':
+            context.rect(x - (25 * sizeFactor), y - (25 * sizeFactor), 50 * sizeFactor, 50 * sizeFactor);
+            break;
+          case 'triangle':
+            context.moveTo(x, y - (25 * sizeFactor));
+            context.lineTo(x - (25 * sizeFactor), y + (25 * sizeFactor));
+            context.lineTo(x + (25 * sizeFactor), y + (25 * sizeFactor));
+            context.closePath();
+            break;
+          case 'diamond':
+            context.moveTo(x, y - (25 * sizeFactor));
+            context.lineTo(x + (15 * sizeFactor), y);
+            context.lineTo(x, y + (25 * sizeFactor));
+            context.lineTo(x - (15 * sizeFactor), y);
+            context.closePath();
+            break;
+          case 'trapezoid':
+            context.moveTo(x - (25 * sizeFactor), y - (25 * sizeFactor));
+            context.lineTo(x + (25 * sizeFactor), y - (25 * sizeFactor));
+            context.lineTo(x + (50 * sizeFactor), y + (25 * sizeFactor));
+            context.lineTo(x - (50 * sizeFactor), y + (25 * sizeFactor));
+            context.closePath();
+            break;
+        }
+
+        context.fill();
+      }
+    </script>
+  </head>
+  <body>
+    <canvas></canvas>
+    <div id='shapes'>
+      <button id='circle-button'>Circle</button>
+      <button id='square-button'>Square</button>
+      <button id='triangle-button'>Triangle</button>
+      <button id='diamond-button'>Diamond</button>
+      <button id='trapezoid-button'>Trapezoid</button>
+    </div>
+    <div id='colours'>
+      <button id='red-button'>Red</button>
+      <button id='orange-button'>Orange</button>
+      <button id='yellow-button'>Yellow</button>
+      <button id='green-button'>Green</button>
+      <button id='blue-button'>Blue</button>
+      <button id='indigo-button'>Indigo</button>
+      <button id='violet-button'>Violet</button>
+    </div>
+    <div id='sizes'>
+      <button id='tiny-button'>Tiny</button>
+      <button id='small-button'>Small</button>
+      <button id='average-button'>Average</button>
+      <button id='big-button'>Big</button>
+      <button id='huge-button'>Huge</button>
+    </div>
+  </body>
+</html>
