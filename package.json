@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build:frontend": "cd svelte-ws-example && npm run build"
+    "build:frontend": "cd svelte-ws-example && npm install && npx vite build"
   },
   "repository": {
     "type": "git",
