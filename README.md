@@ -1,7 +1,7 @@
-## ICE 05: Websockets
-# Colin Lemire (solo)
+# ICE 05: Websockets
+## Colin Lemire (solo)
 
-## Project Description
+# Project Description
 
 This application is a simple websocket that allows users to connect to a chat service where messages are broadcast to all users. The server uses the Node.js ws library to handle simple communication among users. The addition I made was to keep count of how many users are connected at any time. The chat will also update users with a current count of all users on the application whenever someone connects or disconnects. The project is extremely simple but I thought it fair because I was working solo. The styling was done with the use of AI. 
 
