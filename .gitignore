@@ -1,0 +1,5 @@
+node_modules
+.idea
+svelte-ws-example/dist
+svelte-ws-example/node_modules
+package-lock.json

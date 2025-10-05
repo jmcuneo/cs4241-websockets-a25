@@ -1,0 +1,27 @@
+{
+  "name": "ice05-elijahgray-a25",
+  "version": "1.0.0",
+  "description": "In this activity, you will work in groups to build a simple websockets application",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build:frontend": "cd svelte-ws-example && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmcuneo/cs4241-websockets-a25.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jmcuneo/cs4241-websockets-a25/issues"
+  },
+  "homepage": "https://github.com/jmcuneo/cs4241-websockets-a25#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "node": "^24.9.0",
+    "vite-express": "^0.21.1",
+    "ws": "^8.18.3"
+  }
+}

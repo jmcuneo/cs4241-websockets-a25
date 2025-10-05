@@ -1,17 +1,11 @@
-# ICE 05: Websockets
+This project was created by Elijah Gray, I apologize for the late submission as I was having some medical issues.
 
-In this activity, you will work in groups to build a simple websockets application
+This is an extremely simply chat site that announces when you join and lets people have usernames in the chat.
+the website loads up old messages from the chat log. The interface leaves much to be desired but I was in a rush.
 
-### Instructions
+I was assisted by AI when trying to get svelte setup as I was having significant trouble. I reused some old code from
+previous assignments as well. My biggest usage was when trying to figure out how to get messages back and forth and seeing
+lots of examples.
 
-1. Divide yourselves into groups of 3 - 5 students. **Make sure to register all your group members on Canvas so that you get credit.**
+I also consulted geeks4geeks but I lost the page I had been referencing. I tried to cite wherever possible.
 
-2. Implement the basic websockets setup demo from the [sockets guide](https://github.com/jmcuneo/cs4241-guides/blob/master/using.sockets.md). Make sure that is up and running correctly before proceeding to the next step.
-
-3. Using the demo as a starting point, create a simple networked web application. Make sure the application can handle everybody in your group. Be creative, but manage your time and expectations wisely so that you have a complete application to submit by the end of class.
-
-4. Write up a README file that includes the names of all of your group members and a description of what the application does. Be sure to list anything a user might need to know before using your application. Also describe any challenges your group faced.
-
-5. Submit your final assignment by initiating a pull request against this repo. You are welcome to deploy this project on a hosting service, but focus on getting something that works on your local machines.
-
-**NOTE:** The demo uses Svelte, but you are welcome to switch to a different UI framework if you prefer.
