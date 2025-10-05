@@ -1,17 +1,8 @@
-# ICE 05: Websockets
+## ICE 05: Websockets
+# Colin Lemire (solo)
 
-In this activity, you will work in groups to build a simple websockets application
+## Project Description
 
-### Instructions
+This application is a simple websocket that allows users to connect to a chat service where messages are broadcast to all users. The server uses the Node.js ws library to handle simple communication among users. The addition I made was to keep count of how many users are connected at any time. The chat will also update users with a current count of all users on the application whenever someone connects or disconnects. The project is extremely simple but I thought it fair because I was working solo. The styling was done with the use of AI. 
 
-1. Divide yourselves into groups of 3 - 5 students. **Make sure to register all your group members on Canvas so that you get credit.**
-
-2. Implement the basic websockets setup demo from the [sockets guide](https://github.com/jmcuneo/cs4241-guides/blob/master/using.sockets.md). Make sure that is up and running correctly before proceeding to the next step.
-
-3. Using the demo as a starting point, create a simple networked web application. Make sure the application can handle everybody in your group. Be creative, but manage your time and expectations wisely so that you have a complete application to submit by the end of class.
-
-4. Write up a README file that includes the names of all of your group members and a description of what the application does. Be sure to list anything a user might need to know before using your application. Also describe any challenges your group faced.
-
-5. Submit your final assignment by initiating a pull request against this repo. You are welcome to deploy this project on a hosting service, but focus on getting something that works on your local machines.
-
-**NOTE:** The demo uses Svelte, but you are welcome to switch to a different UI framework if you prefer.
+To use the project, simply type npm start in the terminal and connect to the application through the browser. Using two tabs is necessary to have users interact with each other.
