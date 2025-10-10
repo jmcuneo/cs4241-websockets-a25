@@ -14,4 +14,7 @@ to run
 5. simple texting platform where you can send messages back and forth
 
 ### Challenges
-1. it was a little challenging managing svelte on my own but overall this was a good learning experience on my end. 
+1. it was a little challenging managing svelte on my own but overall this was a good learning experience on my end.
+
+<img width="1512" height="829" alt="Screenshot 2025-10-10 at 2 34 16 PM" src="https://github.com/user-attachments/assets/8b628307-1546-473f-9b52-2a02b1418102" />
+<img width="1512" height="829" alt="Screenshot 2025-10-10 at 2 35 09 PM" src="https://github.com/user-attachments/assets/aad5f300-46f7-4a16-9269-81ba0099e206" />
