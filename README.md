@@ -1,17 +1,20 @@
-# ICE 05: Websockets
+# ICE 05: Websockets 
+Amanda Longo
 
-In this activity, you will work in groups to build a simple websockets application
+I created Textopia which is just a simple texting platform for multiple clients to join and text back and forth! I made it look pretty too
 
-### Instructions
+There was no ICE group that was open, I completed this by myself because I was at a conference during the class that completed the ICE05
 
-1. Divide yourselves into groups of 3 - 5 students. **Make sure to register all your group members on Canvas so that you get credit.**
+### Instructions 
+to run 
+1. cd ICE05-AmandaLongo
+2. node server.js
+3. open multiple tabs to create new users in th chat!
+4. enter your name to be entered into the chat
+5. simple texting platform where you can send messages back and forth
 
-2. Implement the basic websockets setup demo from the [sockets guide](https://github.com/jmcuneo/cs4241-guides/blob/master/using.sockets.md). Make sure that is up and running correctly before proceeding to the next step.
+### Challenges
+1. it was a little challenging managing svelte on my own but overall this was a good learning experience on my end.
 
-3. Using the demo as a starting point, create a simple networked web application. Make sure the application can handle everybody in your group. Be creative, but manage your time and expectations wisely so that you have a complete application to submit by the end of class.
-
-4. Write up a README file that includes the names of all of your group members and a description of what the application does. Be sure to list anything a user might need to know before using your application. Also describe any challenges your group faced.
-
-5. Submit your final assignment by initiating a pull request against this repo. You are welcome to deploy this project on a hosting service, but focus on getting something that works on your local machines.
-
-**NOTE:** The demo uses Svelte, but you are welcome to switch to a different UI framework if you prefer.
+<img width="1512" height="829" alt="Screenshot 2025-10-10 at 2 34 16 PM" src="https://github.com/user-attachments/assets/8b628307-1546-473f-9b52-2a02b1418102" />
+<img width="1512" height="829" alt="Screenshot 2025-10-10 at 2 35 09 PM" src="https://github.com/user-attachments/assets/aad5f300-46f7-4a16-9269-81ba0099e206" />
